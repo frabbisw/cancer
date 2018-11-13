@@ -160,7 +160,7 @@ public class ImagePicker {
     public static Bitmap getSquared(Bitmap b)
     {
         int extra=b.getHeight()-b.getWidth();
-        return Bitmap.createBitmap(b, 0, extra/2, b.getWidth(), b.getWidth());
+        return Bitmap.createBitmap(b, 0, extra/4, b.getWidth(), b.getWidth()+extra/2);
     }
 
     public static String toBase64(Bitmap bmp)

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     TextView box;
+    String ipstring = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     public static final int PICK_USER_PROFILE_IMAGE = 1000;
 
     public void startCameraActivity(View view){
+        box.setText("-");
+        EditText edit = (EditText) findViewById(R.id.edit);
+        ipstring = edit.getText().toString();
+
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(MainActivity.this.getPackageManager()) != null) {
             startActivityForResult(cameraIntent, PICK_USER_PROFILE_IMAGE);
@@ -66,7 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void postImage(final String encoded, final Context context)
     {
-        String url = "http://192.168.0.107:9001/predict_digit";
+        String protocol = "http://";
+        //String ip = edit.getText().toString();
+        //String port = "9001";
+        String route = "predict_digit";
+        //String url = "http://192.168.0.107:9001/predict_digit";
+        String url = protocol+ipstring+"/"+route;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
