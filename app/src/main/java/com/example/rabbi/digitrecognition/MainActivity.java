@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     //your compressed rotated bitmap here
 
                     bmp = ImagePicker.getSquared(bmp);
-                    bmp = ImagePicker.getResized(bmp,28,28);
+                    //bmp = ImagePicker.getResized(bmp,28,28);
                     String encoded = ImagePicker.toBase64(bmp);
 
                     postImage(encoded, getApplicationContext());
