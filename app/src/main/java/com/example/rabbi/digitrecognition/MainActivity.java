@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void postImage(final String encoded, final Context context)
     {
-        String protocol = "http://";
+        //String protocol = "http://";
         //String ip = edit.getText().toString();
         //String port = "9001";
-        String route = "predict_digit";
-        //String url = "http://192.168.0.107:9001/predict_digit";
-        String url = protocol+ipstring+"/"+route;
+        //String route = "predict_digit";
+        String url = "http://10.100.107.15:5000/predict";
+        //String url = protocol+ipstring+"/"+route;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
