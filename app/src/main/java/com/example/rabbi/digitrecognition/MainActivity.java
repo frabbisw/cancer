@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void startCameraActivity(View view){
         box.setText("-");
-        EditText edit = (EditText) findViewById(R.id.edit);
-        ipstring = edit.getText().toString();
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(MainActivity.this.getPackageManager()) != null) {
@@ -60,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
                     bmp = ImagePicker.getSquared(bmp);
                     bmp = ImagePicker.getResized(bmp,28,28);
                     String encoded = ImagePicker.toBase64(bmp);
-
-                    //Log.e("BMP",bmp.getHeight()+" "+bmp.getWidth());
-                    //Log.e("BMP","encoded: "+encoded);
 
                     postImage(encoded, getApplicationContext());
                 }
