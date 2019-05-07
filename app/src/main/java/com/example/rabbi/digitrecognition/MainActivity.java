@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.rabbi.constants.Fields;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //String ip = edit.getText().toString();
         //String port = "9001";
         //String route = "predict_digit";
-        String url = "http://10.100.107.15:5000/predict";
+        String url = "http://"+Fields.main_server_ip+":"+Fields.main_server_port+"/receiver";
         //String url = protocol+ipstring+"/"+route;
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String,String> getParams()
             {
                 Map <String, String> values = new HashMap<String, String>();
-                values.put("encoded",encoded);
+                values.put("sample_image",encoded);
 
                 return values;
 
