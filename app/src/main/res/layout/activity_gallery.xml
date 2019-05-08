@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".GalleryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,25 +15,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/cameraImgView"
+            android:id="@+id/galleryImgView"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_margin="15dp"
             android:layout_marginTop="164dp"
             android:background="@drawable/ic_skin"
-            android:onClick="startCameraActivity" />
+            android:onClick="startGallery" />
 
         <Button
-            android:id="@+id/camera_button"
+            android:id="@+id/gallery_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:onClick="postCameraImage"
+            android:onClick="postGalleryImage"
             android:text="Upload" />
 
         <TextView
-            android:id="@+id/camera_box"
+            android:id="@+id/gallery_box"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="#ffeeff"
@@ -48,7 +48,7 @@
 
     </LinearLayout>
 
-
+    
     <include layout="@layout/bottom_navigation"/>
 
 </android.support.constraint.ConstraintLayout>

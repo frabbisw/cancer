@@ -2,12 +2,15 @@ package com.example.rabbi.digitrecognition;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,15 +25,17 @@ import com.android.volley.toolbox.Volley;
 import com.example.rabbi.values.Fields;
 import com.example.rabbi.values.MyCacheManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity {
     TextView box;
     String ipstring = "";
     Bitmap bmpImage;
     String encoded;
 
+    public final static int REQUEST_GET_SINGLE_FILE = 111;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -38,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_camera:
+                    Intent intent_camera = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent_camera);
+                    finish();
                     return true;
                 case R.id.navigation_gallery:
-                    Intent intent_gallery = new Intent(getApplicationContext(),GalleryActivity.class);
-                    startActivity(intent_gallery);
-                    finish();
                     return true;
                 case R.id.navigation_settings:
                     Intent intent_settings= new Intent(getApplicationContext(),SettingsActivity.class);
@@ -57,57 +62,72 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gallery);
 
-        box = (TextView) findViewById(R.id.camera_box);
+        box = (TextView) findViewById(R.id.gallery_box);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        View view = navigation.findViewById(R.id.navigation_camera);
+        View view = navigation.findViewById(R.id.navigation_gallery);
         view.performClick();
     }
-    public static final int PICK_USER_PROFILE_IMAGE = 1000;
 
-    public void startCameraActivity(View view){
-        box.setText("-");
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(MainActivity.this.getPackageManager()) != null) {
-            startActivityForResult(cameraIntent, PICK_USER_PROFILE_IMAGE);
-        }
+    public void startGallery(View view) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"),REQUEST_GET_SINGLE_FILE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == REQUEST_GET_SINGLE_FILE) {
+                    Uri selectedImageUri = data.getData();
+                    // Get the path from the Uri
+                    final String path = getPathFromURI(selectedImageUri);
+                    if (path != null) {
+                        File f = new File(path);
+                        selectedImageUri = Uri.fromFile(f);
+                    }
+                    // Set the image in ImageView
+                    ImageView img = (ImageView) findViewById(R.id.galleryImgView);
+                    img.setImageURI(selectedImageUri);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == PICK_USER_PROFILE_IMAGE) {
-                if (resultCode == RESULT_OK) {
-                    bmpImage = ImagePicker.getImageFromResult(this, resultCode, data);
-                    //your compressed rotated bitmap here
-
-                    bmpImage = ImagePicker.getSquared(bmpImage);
-
-                    ImageView img = (ImageView) findViewById(R.id.cameraImgView);
-                    img.setImageBitmap(bmpImage);
-
+                    bmpImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                     bmpImage = ImagePicker.getResized(bmpImage,224,224);
                     encoded = ImagePicker.toBase64(bmpImage);
-
-                    //postImage(encoded, getApplicationContext());
                 }
             }
+        } catch (Exception e) {
+            Log.e("FileSelectorActivity", "File select error", e);
         }
     }
 
-    public void postCameraImage(View view) {
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
+
+    public void postGalleryImage(View view) {
         postImage(encoded, getApplicationContext());
     }
 
     public void postImage(final String encoded, final Context context)
     {
         String url = MyCacheManager.getURI(getApplicationContext());
+        Log.e("FURI",Fields.getServerUrl());
+        Log.e("CURI",MyCacheManager.getURI(getApplicationContext()));
+
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
@@ -115,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         box.setText(response);
-                        //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener()
@@ -138,5 +158,4 @@ public class MainActivity extends AppCompatActivity {
         };
         Volley.newRequestQueue(context).add(request);
     }
-
 }
