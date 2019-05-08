@@ -3,8 +3,8 @@
     package="com.example.rabbi.digitrecognition">
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,16 +16,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".GalleryActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.rabbi.maps.MapActivity"></activity>
+        <activity android:name="com.example.rabbi.treatments.DoctorActivity" />
+        <activity android:name="com.example.rabbi.cancer.SettingsActivity" />
+        <activity android:name="com.example.rabbi.cancer.GalleryActivity" />
+        <activity android:name="com.example.rabbi.cancer.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CameraActivity" />
+        <activity android:name="com.example.rabbi.cancer.CameraActivity" />
     </application>
 
 </manifest>

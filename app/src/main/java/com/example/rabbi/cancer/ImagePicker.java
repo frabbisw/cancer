@@ -1,4 +1,4 @@
-package com.example.rabbi.digitrecognition;
+package com.example.rabbi.cancer;
 
 import android.app.Activity;
 import android.content.Context;

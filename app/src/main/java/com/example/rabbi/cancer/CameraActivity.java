@@ -1,14 +1,12 @@
-package com.example.rabbi.digitrecognition;
+package com.example.rabbi.cancer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.RelativeLayout;
+
+import com.example.rabbi.digitrecognition.R;
 
 public class CameraActivity extends AppCompatActivity {
 

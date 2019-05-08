@@ -1,4 +1,4 @@
-package com.example.rabbi.digitrecognition;
+package com.example.rabbi.cancer;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.rabbi.digitrecognition.R;
 import com.example.rabbi.values.Constants;
 import com.example.rabbi.values.MyCacheManager;
 
